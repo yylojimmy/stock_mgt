@@ -1,0 +1,15 @@
+# 清理大文件與衍生檔歷史的忽略清單（供 BFG 參考）
+# 將以下路徑從歷史中移除：
+# - node_modules
+# - __pycache__ / .pytest_cache
+# - 本地資料庫 *.db, *.db-wal, *.db-shm
+# - .trae 本地資料夾
+
+# Globs for BFG --delete-folders/--delete-files usage
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/*.db
+**/*.db-wal
+**/*.db-shm
+.trae

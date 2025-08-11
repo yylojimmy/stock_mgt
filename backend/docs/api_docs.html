@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票管理系統 API 文檔</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .endpoint {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .endpoint-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .endpoint-content {
+            padding: 20px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .method.get { background: #28a745; color: white; }
+        .method.post { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .parameter {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>股票管理系統 API 文檔</h1>
+        <p><strong>版本:</strong> 1.0.0</p>
+        <p><strong>基礎URL:</strong> http://localhost:5001/api</p>
+        <p><strong>生成時間:</strong> 2025-08-06T23:27:14.783391</p>
+        <p>提供股票、交易、股息和投資組合管理的完整API服務</p>
+    </div>
+<h2>STOCKS - 股票管理API</h2>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /stocks - 獲取股票列表
+                </div>
+                <div class="endpoint-content"><p>獲取所有股票的列表，支持分頁和搜索</p><h4>參數:</h4><div class="parameter">
+                        <strong>page</strong> (integer): 頁碼，默認為1
+                    </div><div class="parameter">
+                        <strong>per_page</strong> (integer): 每頁數量，默認為20，最大100
+                    </div><div class="parameter">
+                        <strong>search</strong> (string): 搜索關鍵詞（股票代碼或名稱）
+                    </div><div class="parameter">
+                        <strong>market</strong> (string): 市場篩選（HKEX, NYSE, NASDAQ等）
+                    </div><h4>響應示例:</h4><pre><code>{
+  "success": true,
+  "data": [
+    {
+      "stock_id": 1,
+      "stock_code": "0700.HK",
+      "stock_name": "騰訊控股",
+      "market": "HKEX",
+      "total_shares": 100.0,
+      "avg_cost": 400.5,
+      "current_price": 420.0,
+      "created_at": "2024-01-01T00:00:00",
+      "updated_at": "2024-01-01T00:00:00"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 20,
+    "total": 1,
+    "pages": 1
+  }
+}</code></pre></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    /stocks - 創建股票
+                </div>
+                <div class="endpoint-content"><p>添加新的股票到系統中</p><h4>請求體示例:</h4><pre><code>{
+  "stock_code": "0700.HK",
+  "stock_name": "騰訊控股",
+  "market": "HKEX",
+  "current_price": 420.0
+}</code></pre><h4>響應示例:</h4><pre><code>{
+  "success": true,
+  "data": {
+    "stock_id": 1,
+    "stock_code": "0700.HK",
+    "stock_name": "騰訊控股",
+    "market": "HKEX",
+    "current_price": 420.0
+  },
+  "message": "股票創建成功"
+}</code></pre></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /stocks/{stock_id} - 獲取單個股票詳情
+                </div>
+                <div class="endpoint-content"><p>根據股票ID獲取詳細信息</p><h4>參數:</h4><div class="parameter">
+                        <strong>stock_id</strong> (integer) (必填): 股票ID
+                    </div></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method put">PUT</span>
+                    /stocks/{stock_id} - 更新股票信息
+                </div>
+                <div class="endpoint-content"><p>更新指定股票的信息</p></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method delete">DELETE</span>
+                    /stocks/{stock_id} - 刪除股票
+                </div>
+                <div class="endpoint-content"><p>從系統中刪除指定股票</p></div></div>
+<h2>TRANSACTIONS - 交易記錄管理API</h2>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /transactions - 獲取交易記錄列表
+                </div>
+                <div class="endpoint-content"><p>獲取所有交易記錄，支持分頁和篩選</p><h4>參數:</h4><div class="parameter">
+                        <strong>page</strong> (integer): 頁碼
+                    </div><div class="parameter">
+                        <strong>per_page</strong> (integer): 每頁數量
+                    </div><div class="parameter">
+                        <strong>stock_code</strong> (string): 股票代碼篩選
+                    </div><div class="parameter">
+                        <strong>transaction_type</strong> (string): 交易類型（buy/sell）
+                    </div><div class="parameter">
+                        <strong>start_date</strong> (string): 開始日期（YYYY-MM-DD）
+                    </div><div class="parameter">
+                        <strong>end_date</strong> (string): 結束日期（YYYY-MM-DD）
+                    </div></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    /transactions - 創建交易記錄
+                </div>
+                <div class="endpoint-content"><p>添加新的交易記錄</p><h4>請求體示例:</h4><pre><code>{
+  "stock_code": "0700.HK",
+  "transaction_type": "buy",
+  "transaction_date": "2024-01-15",
+  "price": 400.5,
+  "shares": 100,
+  "commission": 10.0,
+  "notes": "首次買入"
+}</code></pre></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /transactions/{transaction_id} - 獲取單個交易記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method put">PUT</span>
+                    /transactions/{transaction_id} - 更新交易記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method delete">DELETE</span>
+                    /transactions/{transaction_id} - 刪除交易記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /transactions/stats - 獲取交易統計信息
+                </div>
+                <div class="endpoint-content"></div></div>
+<h2>DIVIDENDS - 股息記錄管理API</h2>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /dividends - 獲取股息記錄列表
+                </div>
+                <div class="endpoint-content"><h4>參數:</h4><div class="parameter">
+                        <strong>page</strong> (integer): 頁碼
+                    </div><div class="parameter">
+                        <strong>per_page</strong> (integer): 每頁數量
+                    </div><div class="parameter">
+                        <strong>stock_code</strong> (string): 股票代碼篩選
+                    </div><div class="parameter">
+                        <strong>start_date</strong> (string): 開始日期
+                    </div><div class="parameter">
+                        <strong>end_date</strong> (string): 結束日期
+                    </div><div class="parameter">
+                        <strong>currency</strong> (string): 幣種篩選
+                    </div></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method post">POST</span>
+                    /dividends - 創建股息記錄
+                </div>
+                <div class="endpoint-content"><h4>請求體示例:</h4><pre><code>{
+  "stock_code": "0700.HK",
+  "dividend_date": "2024-03-15",
+  "dividend_per_share": 2.4,
+  "total_dividend": 240.0,
+  "tax_amount": 24.0,
+  "currency": "HKD",
+  "notes": "年度股息"
+}</code></pre></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /dividends/{dividend_id} - 獲取單個股息記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method put">PUT</span>
+                    /dividends/{dividend_id} - 更新股息記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method delete">DELETE</span>
+                    /dividends/{dividend_id} - 刪除股息記錄
+                </div>
+                <div class="endpoint-content"></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /dividends/stats - 獲取股息統計信息
+                </div>
+                <div class="endpoint-content"></div></div>
+<h2>PORTFOLIO - 投資組合分析API</h2>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /portfolio/summary - 獲取投資組合概覽
+                </div>
+                <div class="endpoint-content"><p>獲取投資組合的總體統計信息</p><h4>響應示例:</h4><pre><code>{
+  "success": true,
+  "data": {
+    "total_market_value": 42000.0,
+    "total_cost": 40050.0,
+    "total_profit_loss": 1950.0,
+    "total_return_rate": 4.87,
+    "total_dividend": 240.0,
+    "total_return": 2190.0,
+    "total_return_pct": 5.47,
+    "holdings_count": 1,
+    "holdings": []
+  }
+}</code></pre></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /portfolio/analysis - 獲取投資組合分析
+                </div>
+                <div class="endpoint-content"><p>獲取資產配置和持倉分析</p></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /portfolio/performance - 獲取投資組合績效分析
+                </div>
+                <div class="endpoint-content"><h4>參數:</h4><div class="parameter">
+                        <strong>period</strong> (string): 時間週期（1m, 3m, 6m, 1y, all）
+                    </div></div></div>
+<div class="endpoint">
+                <div class="endpoint-header">
+                    <span class="method get">GET</span>
+                    /portfolio/dividend-analysis - 獲取股息分析
+                </div>
+                <div class="endpoint-content"><h4>參數:</h4><div class="parameter">
+                        <strong>year</strong> (integer): 年份
+                    </div></div></div>
+</body></html>
